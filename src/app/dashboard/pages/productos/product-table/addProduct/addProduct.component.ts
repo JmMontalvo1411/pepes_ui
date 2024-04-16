@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } 
 import { TagService } from '@services/tag.service';
 import { ProductService } from '@services/product.service';
 import { ProductItem } from '@interfaces/product';
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-product',
@@ -25,6 +25,7 @@ export default class AddProductComponent{
   public tagsService = inject(TagService);
   public productService = inject(ProductService);
 
+
   submitted = false;
 
 
@@ -38,7 +39,7 @@ export default class AddProductComponent{
   );
 
 
-  constructor() {
+  constructor(private toastrService: ToastrService) {
     
   }
 
@@ -121,6 +122,7 @@ export default class AddProductComponent{
       console.log('submit');
     }
     this.submitted = false;
+    this.toastrService.success(`Producto ${this.addForm.controls['name'].value} creado`, '¡Correcto!', { timeOut: 3000 })
   }
 
   onReset(): void {

@@ -61,6 +61,21 @@ export class ProductService {
     );
   }
 
+  updateData(){
+    this.http.get<ProductsResponse>('assets/data/products.json')
+      .pipe(delay(1500))
+      .subscribe( res => {
+        const data = res.data.filter(x => x.pin).slice().concat(res.data.filter(x => !x.pin).slice().sort( (a, b) => {return this.azComparation(a.name, b.name, true)}));
+        this.state.set({
+          loading: false,
+          products: data
+        });
+    });
+  }
+
+
+
+
   changePin(productItem: ProductItem, index: Number): void {
     const integerIndex = parseInt(index.toString(), 10);
     this.products()[integerIndex] = productItem;

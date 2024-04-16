@@ -33,6 +33,7 @@ interface OptionFilter {
   name: string,
   options: number,
   input: string,
+  inference?: (value1: any, value2: any) => boolean
 }
 
 
@@ -40,7 +41,8 @@ interface Inference {
   name: string,
   option: OptionFilter[],
   numValue: number,
-  strValue: string
+  strValue: string,
+  value?: any
 }
 
 
@@ -305,14 +307,6 @@ export default class ProductTableComponent {
     }
   }
 
-  edit(item: ProductItem): void {
-    
-  }
-
-  delete(item: ProductItem): void {
-
-  }
-
   onPinChange(productItem: ProductItem, index: number, newValue: boolean): void {
     productItem.pin = newValue;
     this.productService.changePin(productItem, index);
@@ -407,11 +401,11 @@ export default class ProductTableComponent {
 
   selectColFilter(event: any, index: number): void {
 
-    const opcion = parseInt(event.target.value, 10); 
+    const option = parseInt(event.target.value, 10); 
 
-    if (typeof opcion === 'number') {
+    if (typeof option === 'number') {
 
-      switch (opcion) {
+      switch (option) {
         case 1:
           this.filters[index] = {
             name: this.columnasFilters[index].name,
@@ -419,14 +413,23 @@ export default class ProductTableComponent {
               name: 'igual',
               options: 1,
               input: 'select',
+              inference: (value1: string, value2: string) => {
+                return value1 === value2;
+              }
             },{
               name: 'no igual',
               options: 2,
               input: 'select',
+              inference: (value1: string, value2: string) => {
+                return value1 !== value2;
+              }
             },{
               name: 'contiene',
               options: 3,
               input: 'textbox',
+              inference: (value1: string, value2: string) => {
+                return value1 === value2;
+              }
             }],
             numValue: 0,
             strValue: ''
@@ -437,35 +440,53 @@ export default class ProductTableComponent {
             name: this.columnasFilters[index].name,
             option: [{
               name: 'igual',
-              options: 1,
-              input: 'numbox',
-            },{
-              name: 'no igual',
-              options: 2,
-              input: 'numbox',
-            },{
-              name: 'mayor',
               options: 4,
               input: 'numbox',
+              inference: (value1: number, value2: number) => {
+                return value1 === value2;
+              }
             },{
-              name: 'mayor igual',
+              name: 'no igual',
               options: 5,
               input: 'numbox',
+              inference: (value1: number, value2: number) => {
+                return value1 !== value2;
+              }
             },{
-              name: 'menor',
+              name: 'mayor',
               options: 6,
               input: 'numbox',
+              inference: (value1: number, value2: number) => {
+                return value1 > value2;
+              }
             },{
-              name: 'menor igual',
+              name: 'mayor igual',
               options: 7,
               input: 'numbox',
+              inference: (value1: number, value2: number) => {
+                return value1 >= value2;
+              }
+            },{
+              name: 'menor',
+              options: 8,
+              input: 'numbox',
+              inference: (value1: number, value2: number) => {
+                return value1 < value2;
+              }
+            },{
+              name: 'menor igual',
+              options: 9,
+              input: 'numbox',
+              inference: (value1: number, value2: number) => {
+                return value1 <= value2;
+              }
             }],
             numValue: 0,
             strValue: ''
           }
           break;
         default:
-          console.log("Invalid option or non-numeric value");
+          console.log("Invalid option");
           break;
       }
 
@@ -475,6 +496,112 @@ export default class ProductTableComponent {
       console.log("Invalid option: not a number");
     }
   }
+
+  selectOptionFilter(event: any, index: number): void {
+    const option = parseInt(event.target.value, 10);
+    this.filters[index].numValue = option;
+  }
+
+
+  hashKey(atr: string): string {
+    switch(atr) {
+      case 'Producto':
+        return 'name';
+      case 'Tipo':
+        return 'tag';
+      case 'Costo':
+        return 'cost';
+      case 'Precio':
+        return 'price';
+      case 'Utilidad':
+        return 'utility';
+      case 'X Stock':
+        return 'stock';
+      case 'Valor Neto':
+        return 'revenue';
+      default:
+        return '';
+    }
+  }
+
+  inferenceValue(value1: any, value2: any, numInference: number): boolean {
+    switch(numInference) {
+      case 1:
+        return value1 === value2;
+      case 2:
+        return value1 !== value2;
+      case 3:
+        return value1 === value2;
+      case 4:
+        return value1 === value2;
+      case 5:
+        return value1 !== value2;
+      case 6:
+        return value1 > value2;
+      case 7:
+        return value1 >= value2;
+      case 8:
+        return value1 < value2;
+      case 9:
+        return value1 <= value2;
+      default:
+        return false;
+    }
+  }
+
+  updateFilterValue(event: any, index: number, atr: string): void {
+    let key: string = '';
+    key = this.hashKey(atr);
+    if(key !== ''){
+      this.filters[index].value = event.target.value;
+      console.log(event.target.value);
+    }
+  }
+
+  getColumnsValues(index: number, atr: string): Array<any> {
+    const  uniques = new Set();
+    let key: string = '';
+
+    key = this.hashKey(atr);
+    
+    if(key !== '') {
+      this.productService.products().forEach( (obj) => {
+        const value = obj[key as keyof ProductItem];
+        uniques.add(value);
+      })
+      return Array.from(uniques);
+    }
+    return [];
+  }
+
+
+
+
+  inferenceSentence(val1: any): boolean {
+    let p: boolean = true;
+    for (let i: number = 0; i < this.filters.length; i++) {
+      const numVal = this.filters[i].numValue;
+      const value = this.filters[i].value;
+      let key = this.hashKey(this.filters[i].name) 
+
+        key = key as keyof ProductItem;
+        p = this.inferenceValue(val1[key], value, numVal);
+         
+    }
+    return p;
+  }
+
+  search(): void {
+    this.productService.updateData();
+    this.productService.state.update(
+      value => ({
+        ...value,
+        products:  this.productData().slice().filter((item) => this.inferenceSentence(item))
+      })
+    );
+    this.productService.seeChanges(this.productData().slice().filter((item) => this.inferenceSentence(item)));
+  }
+
 
   exportExcel(): void {
     let workbook = new Workbook();
