@@ -33,7 +33,6 @@ interface OptionFilter {
   name: string,
   options: number,
   input: string,
-  inference?: (value1: any, value2: any) => boolean
 }
 
 
@@ -209,22 +208,22 @@ export default class ProductTableComponent {
       options: 1,
     }, {
       name: 'Tipo',
-      options: 1,
+      options: 2,
     }, {
       name: 'Costo',
-      options: 2,
+      options: 3,
     }, {
       name: 'Precio',
-      options: 2,
+      options: 4,
     }, {
       name: 'Utilidad',
-      options: 2,
+      options: 5,
     }, {
       name: 'X Stock',
-      options: 2,
+      options: 6,
     }, {
       name: 'Valor Neto',
-      options: 2,
+      options: 7,
     } 
   ];
   
@@ -401,90 +400,110 @@ export default class ProductTableComponent {
 
   selectColFilter(event: any, index: number): void {
 
-    const option = parseInt(event.target.value, 10); 
 
+
+    const option = parseInt(event.target.value, 10); 
+     
     if (typeof option === 'number') {
+
+      let strInputs = [{
+        name: 'igual',
+        options: 1,
+        input: 'select',
+      },{
+        name: 'no igual',
+        options: 2,
+        input: 'select',
+      },{
+        name: 'contiene',
+        options: 3,
+        input: 'textbox',
+      }];
+
+      let numericInputs = [{
+        name: 'igual',
+        options: 4,
+        input: 'numbox',
+      },{
+        name: 'no igual',
+        options: 5,
+        input: 'numbox',
+      },{
+        name: 'mayor',
+        options: 6,
+        input: 'numbox',
+      },{
+        name: 'mayor igual',
+        options: 7,
+        input: 'numbox',
+      },{
+        name: 'menor',
+        options: 8,
+        input: 'numbox',
+      },{
+        name: 'menor igual',
+        options: 9,
+        input: 'numbox',
+      }];
 
       switch (option) {
         case 1:
           this.filters[index] = {
-            name: this.columnasFilters[index].name,
-            option: [{
-              name: 'igual',
-              options: 1,
-              input: 'select',
-              inference: (value1: string, value2: string) => {
-                return value1 === value2;
-              }
-            },{
-              name: 'no igual',
-              options: 2,
-              input: 'select',
-              inference: (value1: string, value2: string) => {
-                return value1 !== value2;
-              }
-            },{
-              name: 'contiene',
-              options: 3,
-              input: 'textbox',
-              inference: (value1: string, value2: string) => {
-                return value1 === value2;
-              }
-            }],
+            name: 'Producto',
+            option: strInputs,
             numValue: 0,
             strValue: ''
           }
           break;
         case 2:
           this.filters[index] = {
-            name: this.columnasFilters[index].name,
-            option: [{
-              name: 'igual',
-              options: 4,
-              input: 'numbox',
-              inference: (value1: number, value2: number) => {
-                return value1 === value2;
-              }
-            },{
-              name: 'no igual',
-              options: 5,
-              input: 'numbox',
-              inference: (value1: number, value2: number) => {
-                return value1 !== value2;
-              }
-            },{
-              name: 'mayor',
-              options: 6,
-              input: 'numbox',
-              inference: (value1: number, value2: number) => {
-                return value1 > value2;
-              }
-            },{
-              name: 'mayor igual',
-              options: 7,
-              input: 'numbox',
-              inference: (value1: number, value2: number) => {
-                return value1 >= value2;
-              }
-            },{
-              name: 'menor',
-              options: 8,
-              input: 'numbox',
-              inference: (value1: number, value2: number) => {
-                return value1 < value2;
-              }
-            },{
-              name: 'menor igual',
-              options: 9,
-              input: 'numbox',
-              inference: (value1: number, value2: number) => {
-                return value1 <= value2;
-              }
-            }],
+            name: 'Tipo',
+            option: strInputs,
             numValue: 0,
             strValue: ''
           }
           break;
+        case 3:
+          this.filters[index] = {
+            name: 'Costo',
+            option: numericInputs,
+            numValue: 0,
+            strValue: ''
+          }
+          break;
+        case 4:
+          this.filters[index] = {
+            name: 'Precio',
+            option: numericInputs,
+            numValue: 0,
+            strValue: ''
+          }
+          break;
+        case 5:
+          this.filters[index] = {
+            name: 'Utilidad',
+            option: numericInputs,
+            numValue: 0,
+            strValue: ''
+          }
+          break;
+        case 6:
+          this.filters[index] = {
+            name: 'X Stock',
+            option: numericInputs,
+            numValue: 0,
+            strValue: ''
+          }
+          break;
+        case 7:
+          this.filters[index] = {
+            name: 'Valor Neto',
+            option: numericInputs,
+            numValue: 0,
+            strValue: ''
+          }
+          break;
+
         default:
           console.log("Invalid option");
           break;
@@ -533,17 +552,25 @@ export default class ProductTableComponent {
       case 3:
         return value1 === value2;
       case 4:
-        return value1 === value2;
+        return value1 as Number === value2 as Number;
       case 5:
-        return value1 !== value2;
+        return value1 as Number !== value2 as Number;
       case 6:
-        return value1 > value2;
+        value1 = value1 as Number;
+        value2 = value2 as Number;
+        return value1  > value2 ;
       case 7:
-        return value1 >= value2;
+        value1 = value1 as Number;
+        value2 = value2 as Number;
+        return value1  >= value2 ;
       case 8:
-        return value1 < value2;
+        value1 = value1 as Number;
+        value2 = value2 as Number;
+        return value1  < value2 ;
       case 9:
-        return value1 <= value2;
+        value1 = value1 as Number;
+        value2 = value2 as Number;
+        return value1 <= value2 ;
       default:
         return false;
     }
@@ -554,7 +581,7 @@ export default class ProductTableComponent {
     key = this.hashKey(atr);
     if(key !== ''){
       this.filters[index].value = event.target.value;
-      console.log(event.target.value);
+      console.log(key);
     }
   }
 
@@ -572,27 +599,28 @@ export default class ProductTableComponent {
       return Array.from(uniques);
     }
     return [];
-  }
-
-
-
+  } 
 
   inferenceSentence(val1: any): boolean {
     let p: boolean = true;
+
+
     for (let i: number = 0; i < this.filters.length; i++) {
       const numVal = this.filters[i].numValue;
       const value = this.filters[i].value;
       let key = this.hashKey(this.filters[i].name) 
 
-        key = key as keyof ProductItem;
-        p = this.inferenceValue(val1[key], value, numVal);
+      key = key as keyof ProductItem;
+      console.log(numVal, value, key, this.filters[i].name);
+
+
+      p = this.inferenceValue(val1[key], value, numVal);
          
     }
     return p;
   }
 
   search(): void {
-    this.productService.updateData();
     this.productService.state.update(
       value => ({
         ...value,

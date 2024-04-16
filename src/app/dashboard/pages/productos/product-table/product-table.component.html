@@ -66,7 +66,7 @@
                     <select class="select select-bordered max-w-xs text-lg" (change)="selectColFilter($event, $index)">
                         <option  disabled selected>Columna</option>
                         @for(columnFilter of columnasFilters; track $index){
-                            <option  [value]='columnFilter.options'>{{columnFilter.name}}</option>
+                            <option  [value]='columnFilter.options' >{{columnFilter.name}}</option>
                         } @empty {
                             <option>No hay columnas para mostrar</option>
                         }
@@ -317,13 +317,13 @@
             <tfoot>
             <tr>
                 <th class="font-bold text-lg"> Total </th>
-                <th> <div class="flex items-center font-bold text-lg"> x {{productData().length}} </div> </th>
-                <th> <div class="flex items-center font-bold text-lg"> x {{tagNumberData()}} </div> </th>
-                <th> <div class="flex items-center font-bold text-lg"> $ {{costNumberData()}} </div> </th>
-                <th> <div class="flex items-center font-bold text-lg"> $ {{priceNumberData()}} </div> </th>
-                <th> <div class="flex items-center font-bold text-lg"> $ {{priceNumberData() - costNumberData()}} </div> </th>
-                <th> <div class="flex items-center font-bold text-lg"> x {{stockNumberData()}} </div> </th>
-                <th> <div class="flex items-center font-bold text-lg"> $ {{revenueNumberData()}} </div> </th>
+                <th> <div class="flex items-center font-bold text-lg"> x {{productData().length.toFixed(2)}} </div> </th>
+                <th> <div class="flex items-center font-bold text-lg"> x {{tagNumberData().toFixed(2)}} </div> </th>
+                <th> <div class="flex items-center font-bold text-lg"> $ {{costNumberData().toFixed(2)}} </div> </th>
+                <th> <div class="flex items-center font-bold text-lg"> $ {{priceNumberData().toFixed(2)}} </div> </th>
+                <th> <div class="flex items-center font-bold text-lg"> $ {{(priceNumberData() - costNumberData()).toFixed(2)}} </div> </th>
+                <th> <div class="flex items-center font-bold text-lg"> x {{stockNumberData().toFixed(2)}} </div> </th>
+                <th> <div class="flex items-center font-bold text-lg"> $ {{revenueNumberData().toFixed(2)}} </div> </th>
                 <th></th>
             </tr>
             </tfoot>
