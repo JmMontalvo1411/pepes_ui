@@ -35,7 +35,7 @@ export default class LoginComponent {
   constructor(
     private sanitizer: DomSanitizer,
   ) {
-    const imgRoute = 'assets/images/login/makedecisions_login.jpg';
+    const imgRoute = 'assets/images/product/photo/banner.png';
     const imgBannerRoute = 'assets/images/login/login.svg';
     this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(imgRoute);
     this.imageBannerUrl = this.sanitizer.bypassSecurityTrustUrl(imgBannerRoute);
