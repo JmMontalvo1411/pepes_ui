@@ -77,5 +77,9 @@ export const routes: Routes = [
         path: '',
         redirectTo: '/dashboard',
         pathMatch: 'full'
+    }, {
+        path: '**',
+        loadComponent: () => import('./dashboard/pages/notfound/notfound.component'),
+        pathMatch: 'full'
     } 
 ];
