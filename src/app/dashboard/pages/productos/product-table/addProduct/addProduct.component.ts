@@ -122,7 +122,7 @@ export default class AddProductComponent{
       console.log('submit');
     }
     this.submitted = false;
-    this.toastrService.success(`Producto ${this.addForm.controls['name'].value} creado`, '¡Correcto!', { timeOut: 3000 })
+    this.toastrService.success(`Producto ${this.addForm.controls['name'].value} creado`, '¡Correcto!', { timeOut: 5000 })
   }
 
   onReset(): void {

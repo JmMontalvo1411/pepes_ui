@@ -12,7 +12,7 @@
 }
 
 /* Oculta la barra lateral en pantallas móviles (menos de 768px de ancho) */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .sidebar-desktop {
     display: none; /* Oculta la barra lateral en dispositivos móviles */
   }

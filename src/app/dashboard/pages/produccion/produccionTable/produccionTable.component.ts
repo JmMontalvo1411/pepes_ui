@@ -285,6 +285,28 @@ export class ProduccionTableComponent {
         input: 'numbox',
       }];
 
+      let dateInputs = [{
+        name: 'igual',
+        options: 10,
+        input: 'datebox',
+      },{
+        name: 'menor',
+        options: 11,
+        input: 'datebox',
+      },{
+        name: 'mayor',
+        options: 12,
+        input: 'datebox',
+      },{
+        name: 'menor igual',
+        options: 13,
+        input: 'datebox',
+      },{
+        name: 'mayor igual',
+        options: 14,
+        input: 'datebox',
+      }];
+
       switch (option) {
         case 1:
           this.filters[index] = {
@@ -297,7 +319,7 @@ export class ProduccionTableComponent {
         case 2:
           this.filters[index] = {
             name: 'Fecha Registro',
-            option: numericInputs,
+            option: dateInputs,
             numValue: 0,
             strValue: ''
           }
@@ -305,7 +327,7 @@ export class ProduccionTableComponent {
         case 3:
           this.filters[index] = {
             name: 'Fecha Vencimiento',
-            option: numericInputs,
+            option: dateInputs,
             numValue: 0,
             strValue: ''
           }
@@ -343,13 +365,13 @@ export class ProduccionTableComponent {
           }
           break;
         case 8:
-            this.filters[index] = {
-              name: 'Valor Neto',
-              option: numericInputs,
-              numValue: 0,
-              strValue: ''
-            }
-            break;
+          this.filters[index] = {
+            name: 'Valor Neto',
+            option: numericInputs,
+            numValue: 0,
+            strValue: ''
+          }
+          break;
 
         default:
           console.log("Invalid option");
@@ -364,6 +386,10 @@ export class ProduccionTableComponent {
   }
 
   inferenceValue(value1: any, value2: any, numInference: number): boolean {
+
+    let a = new Date();
+    let b = new Date();
+
     switch(numInference) {
       case 1:
         return value1 == value2;
@@ -391,6 +417,37 @@ export class ProduccionTableComponent {
         value1 = value1 as Number;
         value2 = value2 as Number;
         return value1 <= value2 ;
+
+      case 10:
+        a = new Date(value1);
+        b = new Date(value2);
+        value1 = value1 as Number;
+        value2 = value2 as Number;
+        return a.getTime() == b.getTime();
+      case 11:
+        a = new Date(value1);
+        b = new Date(value2);
+        value1 = value1 as Number;
+        value2 = value2 as Number;
+        return a.getTime() < b.getTime();
+      case 12:
+        a = new Date(value1);
+        b = new Date(value2);
+        value1 = value1 as Number;
+        value2 = value2 as Number;
+        return a.getTime() > b.getTime();
+      case 13:
+        a = new Date(value1);
+        b = new Date(value2);
+        value1 = value1 as Number;
+        value2 = value2 as Number;
+        return a.getTime() <= b.getTime();
+      case 14:
+        a = new Date(value1);
+        b = new Date(value2);
+        value1 = value1 as Number;
+        value2 = value2 as Number;
+        return a.getTime() > b.getTime();
       default:
         return false;
     }
