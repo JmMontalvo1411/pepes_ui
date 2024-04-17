@@ -8,6 +8,7 @@ import { ProductionService } from '@services/production.service';
 import { ProductionItem } from '@interfaces/production';
 import { DeleteProductionComponent } from './deleteProduction/deleteProduction.component';
 import { AddProductionComponent } from './addProduction/addProduction.component';
+import { EditProductionComponent } from './editProduction/editProduction.component';
 
 
 interface Column {
@@ -46,7 +47,8 @@ interface Inference {
     CommonModule,
     FormsModule,
     DeleteProductionComponent,
-    AddProductionComponent
+    AddProductionComponent,
+    EditProductionComponent
   ],
   templateUrl: './produccionTable.component.html',
   styleUrl: './produccionTable.component.css',
@@ -582,7 +584,7 @@ export class ProduccionTableComponent {
         );
       }
     },{
-      icon: this.getIcon('assets/images/product/bread.svg'),
+      icon: this.getIcon('assets/images/product/create.svg'),
       name: 'Fecha Registro',
       dataPopover: '',
       isAscending: true,
@@ -599,7 +601,7 @@ export class ProduccionTableComponent {
       }
     },
     {
-      icon: this.getIcon('assets/images/product/bread.svg'),
+      icon: this.getIcon('assets/images/product/due.svg'),
       name: 'Fecha Vencimiento',
       dataPopover: '',
       isAscending: true,

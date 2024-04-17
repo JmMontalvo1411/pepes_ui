@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input,inject, computed, signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input,inject, computed, signal, OnInit} from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TagService } from '@services/tag.service';
 import { ProductionService } from '@services/production.service';
@@ -19,7 +19,9 @@ import { ProductService } from '@services/product.service';
   styleUrl: './editProduction.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditProductionComponent { 
+export class EditProductionComponent implements OnInit{ 
+
+  @Input({required: true})  productItem!: ProductionItem; 
   @Input() show?: boolean; 
 
   public tagsService = inject(TagService);
@@ -40,9 +42,20 @@ export class EditProductionComponent {
       name: new FormControl<string>('', [ Validators.required, Validators.minLength(50), Validators.pattern("[a-zA-Z ]*")]),
       creationDate: new FormControl<Date>(new Date(), [ Validators.required]),
       dueDate: new FormControl<Date>(new Date(), [ Validators.required]),
-      quantity: new FormControl<number>(0.00, [ Validators.required, Validators.min(0.00)]),
+      quantity: new FormControl<number>(0, [ Validators.required, Validators.min(0.00)]),
     }
   );
+
+  ngOnInit(): void {
+    this.addForm = new FormGroup(
+      {
+        name: new FormControl<string>(this.productItem.name, [ Validators.required, Validators.minLength(50), Validators.pattern("[a-zA-Z ]*")]),
+        creationDate: new FormControl<Date>(this.productItem.creationDate, [ Validators.required]),
+        dueDate: new FormControl<Date>(this.productItem.dueDate, [ Validators.required]),
+        quantity: new FormControl<number>(this.productItem.quantity, [ Validators.required, Validators.min(0.00)]),
+      }
+    );
+  }
 
   constructor(private toastrService: ToastrService) {
   
@@ -55,54 +68,32 @@ export class EditProductionComponent {
 
   get placeholderCurrentStock(): number {
     // this.addForm.controls['quantity'].value
-    if(this.showCompute()) {
-      return this.current;
-    }
-    return 0;
+    return this.current;
   }
 
   get placeholderCurrentUtility(): number {
     // this.addForm.controls['quantity'].value
-    if(this.showCompute()) {
-      return this.currentUtility;
-    }
-    return 0;
+    return this.currentUtility;
   }
 
   get placeholderPredictedStock(): number {
     // this.addForm.controls['quantity'].value
-    if(this.showCompute()) {
-      const quantity =  Number(this.addForm.controls['quantity'].value)  ?? 0.0 as number;
-      const result = quantity  + Number(this.current);
-      return result;
-    }
-    return 0;
+    const quantity =  Number(this.addForm.controls['quantity'].value)  ?? 0.0 as number;
+    const result = quantity  + Number(this.current);
+    return result;
   }
 
   get placeholderPredictedRevenue(): number {
-    if(this.showCompute()) {
-      const quantity =  Number(this.addForm.controls['quantity'].value)  ?? 0.0 as number;
-      const result = quantity  * Number(this.currentUtility);
-      return result;
-    }
-    return 0;
-    // this.addForm.controls['quantity'].value
+    const quantity =  Number(this.addForm.controls['quantity'].value)  ?? 0.0 as number;
+    const result = quantity  * Number(this.currentUtility);
+    return result;
   }
 
   showComputedChangeProduct(){
-    if (this.showCompute2()) {
-      this.showSignal2.update((value) => false);
-    } else {
-      this.showSignal2.update((value) => true);
-    }
   }
 
   showComputedChangeStock(){
-    if (this.showCompute() && this.showCompute2()) {
-      this.showSignal.update((value) => false);
-    } else {
-      this.showSignal.update((value) => true);
-    }
+
   }
 
 
@@ -136,7 +127,7 @@ export class EditProductionComponent {
     }
 
     if(this.submitted) {
-      const uuid = crypto.randomUUID();
+      const uuid = this.productItem.id;
       const quantity = this.addForm.controls['quantity'].value;
       const revenue = Number(quantity) * Number(this.productService.products()[0].utility);
       const production: ProductionItem = {
@@ -157,9 +148,10 @@ export class EditProductionComponent {
 
     this.productService.addProduct(production);
     console.log('submit');
+    this.toastrService.success(`Producción ${this.addForm.controls['name'].value} - ${this.productItem.dueDate} editada.`, '¡Correcto!', { timeOut: 5000 });
   }
     this.submitted = false;
-    this.toastrService.success(`Producción ${this.addForm.controls['name'].value} creado`, '¡Correcto!', { timeOut: 5000 });
+    console.log('cancel');
   }
 
   onReset(): void {
