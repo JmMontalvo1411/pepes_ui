@@ -1,8 +1,7 @@
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule} from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input,OnInit,inject, OnDestroy} from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TagService } from '@services/tag.service';
-import { AddModalService } from '@services/addmodal.service';
 import { ProductService } from '@services/product.service';
 import { ProductItem } from '@interfaces/product';
 import { ImageUploadComponent } from '@shared/imageUpload/imageUpload.component';

@@ -1,15 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnInit, OnChanges, signal, computed, SimpleChanges, inject, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component,  signal, computed, inject } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ProductItem } from '@interfaces/product';
 import { Workbook } from 'exceljs';
 import { saveAs } from 'file-saver';
-import {v4 as uuid} from 'uuid';
-import SearchResultComponent from './search-result/search-result.component';
-import { TagService } from '@services/tag.service';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormsModule,  } from '@angular/forms';
 import AddProductComponent from './addProduct/addProduct.component';
-import { AddModalService } from '@services/addmodal.service';
 import { ProductService } from '@services/product.service';
 import { DeleteComponent } from '../delete/delete.component';
 import { EditarProductoComponent } from './editarProducto/editarProducto.component';
@@ -54,7 +50,6 @@ interface Inference {
     AddProductComponent,
     DeleteComponent,
     EditarProductoComponent,
-    SearchResultComponent
   ],
   templateUrl: './product-table.component.html',
   styleUrl: './product-table.component.css',
@@ -546,15 +541,15 @@ export default class ProductTableComponent {
   inferenceValue(value1: any, value2: any, numInference: number): boolean {
     switch(numInference) {
       case 1:
-        return value1 === value2;
+        return value1 == value2;
       case 2:
-        return value1 !== value2;
+        return value1 != value2;
       case 3:
-        return value1 === value2;
+        return value1 == value2;
       case 4:
-        return value1 as Number === value2 as Number;
+        return value1 as Number == value2 as Number;
       case 5:
-        return value1 as Number !== value2 as Number;
+        return value1 as Number != value2 as Number;
       case 6:
         value1 = value1 as Number;
         value2 = value2 as Number;
@@ -620,14 +615,9 @@ export default class ProductTableComponent {
     return p;
   }
 
-  search(): void {
-    this.productService.state.update(
-      value => ({
-        ...value,
-        products:  this.productData().slice().filter((item) => this.inferenceSentence(item))
-      })
-    );
-    this.productService.seeChanges(this.productData().slice().filter((item) => this.inferenceSentence(item)));
+  async search()  {
+    const data = this.productService.products().slice().filter((item) => this.inferenceSentence(item));
+    this.productService.seeChanges(data);
   }
 
 

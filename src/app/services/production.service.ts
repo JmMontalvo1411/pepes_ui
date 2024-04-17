@@ -1,13 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import type { User, UsersResponse, UserResponse  } from '@interfaces/req-response';
-import type { ProductItem, ProductsResponse } from '@interfaces/product';
-import { delay, map } from 'rxjs';
-import { of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import type { ProductionItem, ProductionsResponse } from '@interfaces/production';
+import { delay} from 'rxjs';
+
 
 interface State {
-  products: Array<ProductItem>,
+  products: Array<ProductionItem>,
   loading: boolean
 }
 
@@ -15,8 +13,9 @@ interface State {
 @Injectable({
   providedIn: 'root'
 })
+export class ProductionService {
 
-export class ProductService {
+
 
   private http = inject(HttpClient);
 
@@ -29,7 +28,7 @@ export class ProductService {
   public loading = computed( () => this.state().loading );
 
   constructor() { 
-    this.http.get<ProductsResponse>('assets/data/products.json')
+    this.http.get<ProductionsResponse>('assets/data/productions.json')
       .pipe(delay(1500))
       .subscribe( res => {
         const data = res.data.filter(x => x.pin).slice().concat(res.data.filter(x => !x.pin).slice().sort( (a, b) => {return this.azComparation(a.name, b.name, true)}));
@@ -47,12 +46,12 @@ export class ProductService {
   }
 
 
-  addProduct(newProduct: ProductItem): void {
+  addProduct(newProduct: ProductionItem): void {
     this.products().push(newProduct);
     this.seeChanges(this.products());
   }
 
-  seeChanges(products: ProductItem[]): void {
+  seeChanges(products: ProductionItem[]): void {
     this.state.update(
       value => ({
         ...value,
@@ -61,8 +60,8 @@ export class ProductService {
     );
   }
 
-  updateData(): Array<ProductItem> {
-    this.http.get<ProductsResponse>('assets/data/products.json')
+  updateData(): Array<ProductionItem> {
+    this.http.get<ProductionsResponse>('assets/data/productions.json')
       .pipe()
       .subscribe( res => {
         const data = res.data.filter(x => x.pin).slice().concat(res.data.filter(x => !x.pin).slice().sort( (a, b) => {return this.azComparation(a.name, b.name, true)}));
@@ -76,22 +75,19 @@ export class ProductService {
     return this.products();
   }
 
-
-
-
-  changePin(productItem: ProductItem, index: Number): void {
+  changePin(productItem: ProductionItem, index: Number): void {
     const integerIndex = parseInt(index.toString(), 10);
     this.products()[integerIndex] = productItem;
     this.seeChanges(this.products());
   }
 
-  editProduct(productItem: ProductItem, index: Number): void {
+  editProduct(productItem: ProductionItem, index: Number): void {
     const integerIndex = parseInt(index.toString(), 10);
     this.products()[integerIndex] = productItem;
     this.seeChanges(this.products());
   }
 
-  delete(productItem?: ProductItem): void {
+  delete(productItem?: ProductionItem): void {
     if (productItem) {
       const index = this.products().findIndex((p) => p.id === productItem.id);
       if (index !== -1) {

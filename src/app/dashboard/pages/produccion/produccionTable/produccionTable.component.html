@@ -1,17 +1,17 @@
 <div class="card overflow-x-auto bg-base-200  ">
     <div class="card-body m-0">
         <div class="flex-1">
-            <h1 class="card-title text-4xl mb-1">Mis productos </h1> 
-            <h1 class="card-title text-xl">Busca, registra o actualiza productos.</h1> 
+            <h1 class="card-title text-4xl mb-1">Producción</h1> 
+            <h1 class="card-title text-xl">Busca, registra o actualiza una producción.</h1> 
             <div class="card-actions flex-row-reverse mt-2">
                 <button class="btn btn-info text-xl" onclick="my_modal_1.showModal()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-6 h-6">
                     <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
                     </svg>            
-                    Producto
+                    Producir
                 </button>
                 <dialog id="my_modal_1" class="modal">
-                    <app-add-product></app-add-product>
+                    <app-add-production/>
                 </dialog>   
             </div>
         </div>
@@ -50,8 +50,9 @@
     </div>
 </div>
 
-@if(showFilters()) {
 
+
+@if(showFilters()) {
 
     <div class="card overflow-x-auto  mb-1 mt-1 mr-1 ml-1">
         <div class="card-body">
@@ -234,7 +235,7 @@
                             <div class="flex items-center gap-3">
                             <div class="avatar">
                                 <div class="mask mask-squircle w-12 h-12">
-                                <img [src]="productItem.img" alt="{{productItem.name}}" />
+                                <img [src]="productItem.guid" alt="{{productItem.name}}" />
                                 </div>
                             </div>
                             <div>
@@ -242,18 +243,17 @@
                             </div>
                             </div>
                         </td>
-                        <td>
-                            <kbd class="kbd kbd-md">{{productItem.tag}}</kbd>
-                        </td>
+                        <td>{{ productItem.creationDate | date: 'yyyy-MM-dd'}}</td>
+                        <td>{{ productItem.dueDate | date: 'yyyy-MM-dd'  }}</td>
                         <td>$ {{productItem.cost | number:'1.2-2'}}</td>
                         <td>$ {{productItem.price | number:'1.2-2'}}</td>
                         <td>$ {{productItem.utility | number:'1.2-2'}}</td>
                         <td>
                             <div class="flex items-center">
-                            @if(productItem.stock > 0) {
-                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> {{productItem.stock}}
+                            @if(productItem.quantity > 0) {
+                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> {{productItem.quantity}}
                             } @else {
-                                <div class="h-2.5 w-2.5 rounded-full bg-pink-700 me-2"></div> {{productItem.stock}}
+                                <div class="h-2.5 w-2.5 rounded-full bg-pink-700 me-2"></div> {{productItem.quantity}}
                             } 
                             </div>
                         </td>
@@ -272,10 +272,10 @@
                                 </svg>
                             </button>
                             <dialog id="delete_modal{{$index}}" class="lg:modal bg-transparent">
-                                <app-delete  [productItem]='productItem'></app-delete>  
+                                <app-delete-production [productItem]='productItem' />
                             </dialog> 
                             <dialog id="edit_modal{{$index}}" class="lg:modal bg-transparent">
-                                <app-editar-producto [productItem]='productItem'/>
+                                <!--<app-editar-producto [productItem]='productItem'/>-->
                             </dialog>
                         </th>
                         
@@ -301,11 +301,6 @@
                     
                 }
     
-    
-    
-    
-    
-                
             </tbody>
             <!-- END: body -->
             <!-- BEGIN: foot -->
@@ -313,7 +308,8 @@
             <tr>
                 <th class="font-bold text-lg"> Total </th>
                 <th> <div class="flex items-center font-bold text-lg"> x {{productData().length.toFixed(2)}} </div> </th>
-                <th> <div class="flex items-center font-bold text-lg"> x {{tagNumberData().toFixed(2)}} </div> </th>
+                <th> <div class="flex items-center font-bold text-lg"> {{productData().length.toFixed(0)}} dias </div> </th>
+                <th> <div class="flex items-center font-bold text-lg"> {{productData().length.toFixed(0)}} dias </div> </th>
                 <th> <div class="flex items-center font-bold text-lg"> $ {{costNumberData().toFixed(2)}} </div> </th>
                 <th> <div class="flex items-center font-bold text-lg"> $ {{priceNumberData().toFixed(2)}} </div> </th>
                 <th> <div class="flex items-center font-bold text-lg"> $ {{(priceNumberData() - costNumberData()).toFixed(2)}} </div> </th>
@@ -326,30 +322,3 @@
         </table>
     </div>
 </div>
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
