@@ -24,7 +24,7 @@
                         <h2 class="text-center text-3xl font-normal leading-9 tracking-tight text-gray-900">RECUPERACIÓN DE CUENTA</h2>
                         <h2 class="text-center text-sm  tracking-tight text-gray-900">Ingresa tu correo electrónico o nombre de usuario 
                             y te enviaremos un enlace para que vuelvas a acceder a tu cuenta.</h2>
-                        <form  [formGroup]="loginForm" class="space-y-2 max-w-xl mx-auto " (ngSubmit)="onSubmit()" >
+                        <form  [formGroup]="recoveryForm" class="space-y-2 max-w-xl mx-auto " (ngSubmit)="onSubmit()" >
                             <!-- begin: email input-->
                             <p class="text-right text-sm text-gray-900">
                                 <a   
@@ -84,7 +84,7 @@
                             </p>
                             <p class="text-center">
                                 <a   
-                                    [routerLink]="['/create-user',]"
+                                    [routerLink]="['/login',]"
                                     class="text-center font-semibold leading-6 text-sky-500 hover:text-sky-700"
                                 >
                                     Llamar a soporte.
@@ -94,7 +94,7 @@
                             <p class="text-left text-sm text-gray-900">
                                 ¿No tienes una cuenta?
                                 <a   
-                                    [routerLink]="['/create-user',]"
+                                    [routerLink]="['/login',]"
                                     class="font-semibold leading-6 text-sky-500 hover:text-sky-700"
                                 >
                                     Crea una aquí.
@@ -119,7 +119,7 @@
                             <p class="text-center text-sm text-gray-900">
                                 ¿No tienes una cuenta?
                                 <a   
-                                    [routerLink]="['/create-user',]"
+                                    [routerLink]="['/login',]"
                                     class="font-semibold leading-6 text-sky-500 hover:text-sky-700"
                                 >
                                     Crea una cuenta aquí.

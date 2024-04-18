@@ -4,6 +4,9 @@ import { RouterModule } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HeaderComponent } from '@shared/header/header.component';
+import { ToastrService } from 'ngx-toastr';
+
+
 
 @Component({
   selector: 'app-recovery',
@@ -23,17 +26,16 @@ export default class RecoveryComponent {
 
   imageUrl!:SafeUrl; 
   imageIconUrl!:SafeUrl;
-  loginForm = new FormGroup(
+  recoveryForm = new FormGroup(
     {
       email: new FormControl('', [ Validators.required, Validators.email]),
-      password: new FormControl('', [ Validators.required, Validators.minLength(8)]),
-
     }
   );
   
 
   constructor(
     private sanitizer: DomSanitizer,
+    private toastrService: ToastrService
   ) {
     const imgRoute = 'assets/images/product/photo/banner.png';
     const imgProtec = 'assets/images/product/photo/protec.svg';
@@ -42,11 +44,11 @@ export default class RecoveryComponent {
   }
 
   get f() {
-    return this.loginForm.controls;
+    return this.recoveryForm.controls;
   }
 
   onSubmit(): void {
-    console.log(this.loginForm.value);
+    this.toastrService.success(`Enlace de confirmación enviado. Revise su corro.`, '¡Listo!', { timeOut: 5000 });
   }
 
 

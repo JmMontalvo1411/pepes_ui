@@ -159,11 +159,12 @@ export class AddProductionComponent {
           dueDate: this.addForm.controls['dueDate'].value ?? new Date()
         };
 
-      this.productService.addProduct(production);
-      console.log('submit');
-    }
+        this.productService.addProduct(production);
+        this.toastrService.success(`Producción ${this.addForm.controls['name'].value} creado`, '¡Correcto!', { timeOut: 5000 });
+        console.log('submit');
+      }
       this.submitted = false;
-      this.toastrService.success(`Producción ${this.addForm.controls['name'].value} creado`, '¡Correcto!', { timeOut: 5000 });
+      
     }
   
     onReset(): void {

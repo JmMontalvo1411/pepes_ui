@@ -120,7 +120,7 @@
                                 <p class="text-left text-sm text-gray-900">
                                     ¿Olvidaste tu contraseña?
                                     <a   
-                                        [routerLink]="['/create-user',]"
+                                        [routerLink]="['/account-recovery',]"
                                         class="font-semibold leading-6 text-sky-500 hover:text-sky-700"
                                     >
                                         Recuperar.
@@ -129,7 +129,7 @@
                                 <p class="text-left text-sm text-gray-900">
                                     ¿No tienes una cuenta?
                                     <a   
-                                        [routerLink]="['/create-user',]"
+                                        [routerLink]="['/login',]"
                                         class="font-semibold leading-6 text-sky-500 hover:text-sky-700"
                                     >
                                         Crea una aquí.
@@ -142,7 +142,7 @@
                         <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
                             <h2 class="text-left text-2xl font-normal leading-6 tracking-tight text-gray-900 ">Registrar cuenta</h2>
                             <h2 class="text-left text-mb  tracking-tight text-gray-900">Bienvenido a PEPE’S, registrate para acceder.</h2>
-                            <form  [formGroup]="loginForm" class="space-y-2 max-w-xl mx-auto" (ngSubmit)="onSubmit()" >
+                            <form  [formGroup]="create" class="space-y-2 max-w-xl mx-auto" (ngSubmit)="onSubmit2()" >
                                 <!-- begin: email input-->
                                 <p class="text-right text-sm text-gray-900">
                                     <a   
@@ -171,13 +171,13 @@
                                             focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
                                             required
                                         >
-                                        @if(f['email'].touched && f['email'].invalid) {
-                                            @if(f['email'].errors && f['email'].errors['required']){
+                                        @if(f2['email'].touched && f2['email'].invalid) {
+                                            @if(f2['email'].errors && f2['email'].errors['required']){
                                                 <p class="mt-2  text-pink-600 text-sm">
                                                     Su correo electrónico  es requerido.
                                                 </p>
                                             }
-                                            @if(f['email'].errors && f['email'].errors['email']){
+                                            @if(f2['email'].errors && f2['email'].errors['email']){
                                                 <p class="mt-2  text-pink-600 text-sm">
                                                     Por favor ingrese su dirección de correo electrónico válida.
                                                 </p>
@@ -206,13 +206,13 @@
                                             "
                                             required
                                         >
-                                        @if(f['password'].touched && f['password'].invalid) {
-                                            @if(f['password'].errors && f['password'].errors['required']){
+                                        @if(f2['password'].touched && f2['password'].invalid) {
+                                            @if(f2['password'].errors && f2['password'].errors['required']){
                                                 <p class="mt-2  text-pink-600 text-sm">
                                                     Su contraseña es requerido.
                                                 </p>
                                             }
-                                            @if(f['password'].errors && f['password'].errors['minlength']){
+                                            @if(f2['password'].errors && f2['password'].errors['minlength']){
                                                 <p class="mt-2  text-pink-600 text-sm">
                                                     La contraseña debe tener 8 dígitos como mínimo.
                                                 </p>
@@ -228,7 +228,7 @@
                                     </div>
                                     <div class="mt-2">
                                         <input 
-                                            formControlName="password"
+                                            formControlName="password2"
                                             id="password" 
                                             name="password" 
                                             type="password" 
@@ -238,13 +238,13 @@
                                             "
                                             required
                                         >
-                                        @if(f['password'].touched && f['password'].invalid) {
-                                            @if(f['password'].errors && f['password'].errors['required']){
+                                        @if(f2['password2'].touched && f2['password2'].invalid) {
+                                            @if(f2['password2'].errors && f2['password2'].errors['required']){
                                                 <p class="mt-2  text-pink-600 text-sm">
                                                     Su contraseña es requerido.
                                                 </p>
                                             }
-                                            @if(f['password'].errors && f['password'].errors['minlength']){
+                                            @if(f2['password2'].errors && f2['password2'].errors['minlength']){
                                                 <p class="mt-2  text-pink-600 text-sm">
                                                     La contraseña debe tener 8 dígitos como mínimo.
                                                 </p>
