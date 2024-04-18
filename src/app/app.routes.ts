@@ -12,6 +12,11 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
+        path: 'account-recovery',
+        loadComponent: () => import('./dashboard/pages/recovery/recovery.component'),
+        pathMatch: 'full'
+    },
+    {
         path: 'dashboard',
         loadComponent: () => import('./dashboard/dashboard.component'),
         children : [
