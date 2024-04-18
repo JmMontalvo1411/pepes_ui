@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component} from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Route, Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HeaderComponent } from '@shared/header/header.component';
 import { ToastrService } from 'ngx-toastr';
-
+import { routes } from '../../../app.routes';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +16,8 @@ import { ToastrService } from 'ngx-toastr';
     FormsModule, 
     ReactiveFormsModule,
     HeaderComponent,
+    RouterModule,
+    
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -25,7 +27,7 @@ export default class LoginComponent {
 
 
   email: string = 'j.barba@pepes.alimentos.com';
-  password: string = 'blackClover32';
+  password: string = '1234abcd';
 
   submitted: boolean = false;
   imageUrl!:SafeUrl; 
@@ -49,7 +51,8 @@ export default class LoginComponent {
 
   constructor(
     private sanitizer: DomSanitizer,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private router: Router
   ) {
     const imgRoute = 'assets/images/product/photo/banner.png';
     const imgBannerRoute = 'assets/images/login/login.svg';
@@ -84,6 +87,8 @@ export default class LoginComponent {
       
       else {
         this.toastrService.success(`Iniciando sesión`, '¡Correcto!', { timeOut: 5000 });
+        this.router.navigate(['/dashboard'])
+        
       }
       
       
