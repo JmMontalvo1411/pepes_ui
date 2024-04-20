@@ -161,7 +161,7 @@ export default class ReportComponent implements OnInit, OnDestroy {
     // Desuscribirse del intervalo al destruir el componente para evitar memory leaks
     this.dataUpdateSubscription.unsubscribe();
   }
-
+  
   private updateData(): void {
     // Generar un número aleatorio y agregarlo a uno de los valores existentes
 
